@@ -9,7 +9,7 @@ package com.guoxiaoxing.java.demo.Annotation;
  */
 public class Fruit {
 
-    @FruitName(fruitName = "apple")
+    @FruitName("apple")
     private String fruitName;
 
     @FruitColor(fruitColor = FruitColor.Color.GREEN)

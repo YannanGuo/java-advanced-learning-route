@@ -32,6 +32,6 @@ public class AnnotationActivity extends AppCompatActivity {
 
     private void setupData() throws NoSuchFieldException {
         FruitName fruitName = Fruit.class.getDeclaredField("fruitName").getAnnotation(FruitName.class);
-        mTvDisplay.setText(fruitName.fruitName());
+        mTvDisplay.setText(fruitName.value());
     }
 }
