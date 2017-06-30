@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.guoxiaoxing.java.demo.grammar.GrammarActivity">
+
+
+    <Button
+        android:id="@+id/btn_break"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="break"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/btn_continue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="continue"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/btn_return"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="return"
+        android:textAllCaps="false" />
+
+    <TextView
+        android:id="@+id/tv_log"
+        android:layout_width="match_parent"
+        android:layout_height="100dp" />
+
+</LinearLayout>
