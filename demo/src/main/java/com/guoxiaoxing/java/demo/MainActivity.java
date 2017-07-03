@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.guoxiaoxing.java.demo.Annotation.AnnotationActivity;
+import com.guoxiaoxing.java.demo.annotation.AnnotationActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 

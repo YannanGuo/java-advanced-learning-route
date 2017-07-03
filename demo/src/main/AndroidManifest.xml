@@ -15,7 +15,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Annotation.AnnotationActivity" />
+        <activity android:name=".annotation.AnnotationActivity" />
         <activity android:name=".grammar.GrammarActivity" />
         <activity android:name=".io.OutputStreamActivity"></activity>
     </application>

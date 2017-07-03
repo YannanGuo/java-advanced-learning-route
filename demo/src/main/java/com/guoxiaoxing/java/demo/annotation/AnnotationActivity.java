@@ -1,4 +1,4 @@
-package com.guoxiaoxing.java.demo.Annotation;
+package com.guoxiaoxing.java.demo.annotation;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

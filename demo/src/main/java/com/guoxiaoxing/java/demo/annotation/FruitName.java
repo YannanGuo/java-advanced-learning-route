@@ -1,4 +1,4 @@
-package com.guoxiaoxing.java.demo.Annotation;
+package com.guoxiaoxing.java.demo.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

@@ -1,4 +1,4 @@
-package com.guoxiaoxing.java.demo.Annotation;
+package com.guoxiaoxing.java.demo.annotation;
 
 /**
  * For more information, you can visit https://github.com/guoxiaoxing or contact me by

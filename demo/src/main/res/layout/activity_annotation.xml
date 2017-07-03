@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context="com.guoxiaoxing.java.demo.Annotation.AnnotationActivity">
+    tools:context="com.guoxiaoxing.java.demo.annotation.AnnotationActivity">
 
     <TextView
         android:id="@+id/tv_display"
