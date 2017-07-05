@@ -1,5 +1,6 @@
 package com.guoxiaoxing.java.demo.object;
 
+
 /**
  * For more information, you can visit https://github.com/guoxiaoxing or contact me by
  * guoxiaoxingse@163.com.
@@ -15,6 +16,7 @@ public class Singleton {
     }
 
     public static Singleton getInstance() {
+
         if (instance == null) {
             synchronized (Singleton.class) {
                 instance = new Singleton();
