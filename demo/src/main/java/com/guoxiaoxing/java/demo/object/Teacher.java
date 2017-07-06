@@ -7,10 +7,35 @@ package com.guoxiaoxing.java.demo.object;
  * @author guoxiaoxing
  * @since 2017/7/5 下午3:56
  */
-public class Teacher {
+public class Teacher implements Cloneable {
 
     private String name;
     private int age;
+    private Course course;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -29,8 +54,10 @@ public class Teacher {
         if (this.age != teacher.age) {
             return false;
         }
-        return name == null ? teacher.name == null : this.name.equals(teacher.name);
-
+        if (!(name == null ? teacher.name == null : this.name.equals(teacher.name))) {
+            return false;
+        }
+        return course == null ? teacher.course == null : course.equals(teacher.course);
     }
 
     @Override
@@ -39,6 +66,7 @@ public class Teacher {
         int result = 31;
         //2 分别计算每个域的散列码并相加求和
         result = result + age + (name == null ? 0 : name.hashCode());
+        result = result + (course == null ? 0 : course.hashCode());
         return result;
     }
 
@@ -47,8 +75,18 @@ public class Teacher {
         return "Teacher{" +
                 "name='" + name + '\'' +
                 ", age=" + age +
+                ", course=" + course +
                 '}';
     }
 
+//    @Override
+//    protected Teacher clone() throws CloneNotSupportedException {
+//        return (Teacher) super.clone();
+//    }
 
+
+    @Override
+    protected Teacher clone() throws CloneNotSupportedException {
+        return (Teacher) super.clone();
+    }
 }

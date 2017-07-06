@@ -364,7 +364,16 @@ protected Object clone() throws CloneNotSupportedException {
 private native Object internalClone();
 ```
 
+
+
 我们知道要实现克隆，就需要实现Cloneable接口，该接口并没有任何方法，只是当一个类实现了Cloneable接口接口，OBject的clone()方法就会返回该类的逐域拷贝。
+
+不过这种拷贝要分两种情况来讨论：
+
+如果对象的每个域都包含一个基本类型的值或者包含一个指向不可变对象的引用，那么克隆的对象正是我们需要的。我们要做的就是声明实现Cloneable接口，然后将clone方法声明
+为public。
+
+如果包含的域引用了可变对象，那么就要去修正这些域
 
 ### 5 finalizer()
 
@@ -442,4 +451,14 @@ private final Object finalizeGuardian = new Object(){
         }
     }
 };
+```
+
+### 6 Comparable
+
+Comparable是一个接口，它并没有在Object中声明。
+
+```java
+public interface Comparable<T> {
+    public int compareTo(T o);
+}
 ```

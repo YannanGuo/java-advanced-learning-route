@@ -23,7 +23,7 @@ public class GrammarActivity extends AppCompatActivity implements View.OnClickLi
         findViewById(R.id.btn_continue).setOnClickListener(this);
         findViewById(R.id.btn_return).setOnClickListener(this);
 
-        mTvLog = (TextView) findViewById(R.id.tv_log)
+        mTvLog = (TextView) findViewById(R.id.tv_log);
     }
 
     @Override

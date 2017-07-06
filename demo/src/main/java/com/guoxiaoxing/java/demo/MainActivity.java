@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.guoxiaoxing.java.demo.annotation.AnnotationActivity;
+import com.guoxiaoxing.java.demo.object.ObjectActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -15,6 +16,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         findViewById(R.id.btn_annotation).setOnClickListener(this);
+        findViewById(R.id.btn_object).setOnClickListener(this);
     }
 
     @Override
@@ -22,6 +24,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn_annotation:
                 startActivity(new Intent(MainActivity.this, AnnotationActivity.class));
+                break;
+            case R.id.btn_object:
+                startActivity(new Intent(MainActivity.this, ObjectActivity.class));
                 break;
         }
     }
