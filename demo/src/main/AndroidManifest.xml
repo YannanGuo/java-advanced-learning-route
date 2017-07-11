@@ -20,7 +20,8 @@
         <activity android:name=".grammar.GrammarActivity" />
         <activity android:name=".io.OutputStreamActivity" />
         <activity android:name=".object.ObjectActivity" />
-        <activity android:name=".collection.CollectionActivity"></activity>
+        <activity android:name=".collection.CollectionActivity" />
+        <activity android:name=".concurrence.ConcurrenceActivity"></activity>
     </application>
 
 </manifest>
