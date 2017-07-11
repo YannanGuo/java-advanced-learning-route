@@ -3,10 +3,10 @@
     package="com.guoxiaoxing.java.demo">
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".App"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
@@ -19,7 +19,8 @@
         <activity android:name=".annotation.AnnotationActivity" />
         <activity android:name=".grammar.GrammarActivity" />
         <activity android:name=".io.OutputStreamActivity" />
-        <activity android:name=".object.ObjectActivity"></activity>
+        <activity android:name=".object.ObjectActivity" />
+        <activity android:name=".collection.CollectionActivity"></activity>
     </application>
 
 </manifest>

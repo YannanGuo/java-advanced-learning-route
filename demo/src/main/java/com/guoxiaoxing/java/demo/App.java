@@ -14,6 +14,8 @@ import com.orhanobut.logger.Logger;
  */
 public class App extends Application {
 
+    public static final String TAG = "Java";
+
     @Override
     public void onCreate() {
         super.onCreate();

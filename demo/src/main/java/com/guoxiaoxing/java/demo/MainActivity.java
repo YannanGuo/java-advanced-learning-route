@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.guoxiaoxing.java.demo.annotation.AnnotationActivity;
+import com.guoxiaoxing.java.demo.collection.CollectionActivity;
 import com.guoxiaoxing.java.demo.object.ObjectActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -17,6 +18,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         findViewById(R.id.btn_annotation).setOnClickListener(this);
         findViewById(R.id.btn_object).setOnClickListener(this);
+        findViewById(R.id.btn_collection).setOnClickListener(this);
     }
 
     @Override
@@ -27,6 +29,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_object:
                 startActivity(new Intent(MainActivity.this, ObjectActivity.class));
+                break;
+            case R.id.btn_collection:
+                startActivity(new Intent(MainActivity.this, CollectionActivity.class));
                 break;
         }
     }
