@@ -13,10 +13,9 @@
 >文章首发于[Github](https://github.com/guoxiaoxing)，后续也会同步在[简书](http://www.jianshu.com/users/66a47e04215b/latest_articles)与
 [CSDN](http://blog.csdn.net/allenwells)等博客平台上。文章中如果有什么问题，欢迎发邮件与我交流，邮件可发至guoxiaoxingse@163.com。
 
+## 集合框架概述
 
 >Java里的集合使用Collection接口来描述，Collection接口继承于Iterable接口，它表示一个独立的元素序列，这些元素服从一条或者多条规则。
-
-## 集合框架结构
 
 Iterable接口
 
@@ -168,8 +167,6 @@ public interface ListIterator<E> extends Iterator<E> {
 
 ```
 
-## 集合框架分类
-
 Java集合框架主要包含4大接口：
 
 - Set：定义一个无序的集合，它保证不能有重复的元素。
@@ -179,22 +176,24 @@ Java集合框架主要包含4大接口：
 
 我们来具体说一说每个接口的优缺点与具体实现。
 
-### Set
+## Set应用场景与实现原理
 
 优点：插入与删除效率高，因为不会引起元素位置改变。
 
 缺点：检索效率低下
 
+应用场景：
+
 HashSet
 
 ```
-以哈希表的形式存放元素
+以哈希表的形式存放元素，为快速查找而设计的Set。
 ```
 
 TreeSet
 
 ```
-实现了Set接口，可以实现排序等功能
+实现了Set接口，可以实现排序等功能。
 ```
 
 LinkedHashSet
@@ -203,31 +202,78 @@ LinkedHashSet
 具有可预知迭代顺序的Set接口的哈希表与链表实现
 ```
 
-### List
+## List应用场景与实现原理
 
 优点：可以动态增长，查找元素效率高。
 
 缺点：插入与删除效率低，因为会引起元素位置改变。
 
-ArrayList
+>List接口继承于Collection，它的实现类是AbstractList。
+
+List接口在Collection接口的基础上新增了以下操作：
+
+```java
+public interface List<E> extends Collection<E> {
+    
+    ...
+
+    E get(int index);
+    
+    E set(int index, E element);
+
+    void add(int index, E element);
+
+    E remove(int index);
+
+    int indexOf(Object o);
+
+    int lastIndexOf(Object o);
+
+    //获取ListIterator
+    ListIterator<E> listIterator();
+
+    //获取指定index的ListIterator
+    ListIterator<E> listIterator(int index);
+
+    //获取子List
+    List<E> subList(int fromIndex, int toIndex);
+
+    @Override
+    default Spliterator<E> spliterator() {
+        return Spliterators.spliterator(this, Spliterator.ORDERED);
+    }
+
+    default void replaceAll(UnaryOperator<E> operator) {
+        Objects.requireNonNull(operator);
+        final ListIterator<E> li = this.listIterator();
+        while (li.hasNext()) {
+            li.set(operator.apply(li.next()));
+        }
+    }
+    
+    //根据指定的Comparator进行排序操作
+    default void sort(Comparator<? super E> c) {
+        Collections.sort(this, c);
+    }
+}
 
 ```
-它擅长于随机访问元素，但在中间插入与移除元素时较慢。
-```
 
-LinkedList
+### ArrayList
 
-```
-它擅长于在中间插入与删除元素，但是随机访问速度较慢。实现了List接口，允许null元素，提供额外的get、remove、insert方法在LinkedList的首部与尾部，这些操作使得LinkedList可以被
+>ArrayList擅长于随机访问元素，但在中间插入与移除元素时较慢。
+
+### LinkedList
+
+>LinkedList擅长于在中间插入与删除元素，但是随机访问速度较慢。实现了List接口，允许null元素，提供额外的get、remove、insert方法在LinkedList的首部与尾部，这些操作使得LinkedList可以被
 用作堆栈（Stack）、队列（Queue）或者双向队列（Deque）。
-```
 
 
 Vector
 
 Stack：实现了后进先出的集合类
 
-### Map
+## Map应用场景与实现原理
 
 HashMap
 
@@ -264,7 +310,7 @@ Hashtable
 另外，除了Vector、Stack、Hashtable、Enumeration是线程安全的，其他都是非线程安全的，线程安全的类方法都是同步的，每次只能有一个线程方法，是重量级
 对象，效率低下。对于非线程安全的类与接口，在多线程中我们自己要去处理线程安全问题。
 
-### Queue
+## Queue应用场景与实现原理
 
 ```java
 public interface Queue<E> extends Collection<E> {

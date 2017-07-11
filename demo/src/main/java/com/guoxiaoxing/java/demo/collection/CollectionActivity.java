@@ -65,9 +65,7 @@ public class CollectionActivity extends AppCompatActivity implements View.OnClic
         arrayList2.add("c");
         arrayList2.add("d");
         arrayList2.add("e");
-        ListIterator<String> listIterator = arrayList2.listIterator();
-        Log.d(App.TAG, "------listIterator------");
-        while (listIterator.hasNext()) {
+        for (ListIterator<String> listIterator = arrayList2.listIterator(); listIterator.hasNext(); ) {
             String result = listIterator.next();
             if (TextUtils.equals(result, "c")) {
                 listIterator.add("f");
