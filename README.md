@@ -1,7 +1,10 @@
 # Java
 
-[Java SE](http://www.oracle.com/technetwork/java/javase/overview/index.html)
-[Java SE Document](http://docs.oracle.com/javase/8/)
+>本系列文章讨论JDK Framework、JVM以及关于Java的一些最佳实践。
+
+- [Open JDK](http://openjdk.java.net/)
+- [Java SE](http://www.oracle.com/technetwork/java/javase/overview/index.html)
+- [Java SE Document](http://docs.oracle.com/javase/8/)
 
 ## Java编程篇
 
