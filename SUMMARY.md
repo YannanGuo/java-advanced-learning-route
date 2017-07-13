@@ -1,4 +1,4 @@
-* [Java编程篇](/doc/Java编程篇)
+* [Java编程篇]()
   * [Java编程篇：对象](/doc/Java编程篇/01Java编程篇：对象.md)
   * [Java编程篇：类与接口](/doc/Java编程篇/02Java编程篇：类与接口.md)
   * [Java编程篇：泛型](/doc/Java编程篇/03Java编程篇：泛型.md)
@@ -9,6 +9,6 @@
   * [Java编程篇：并发](/doc/Java编程篇/08Java编程篇：并发.md)
   * [Java编程篇：异常](/doc/Java编程篇/09Java编程篇：异常.md)
   * [Java编程篇：反射](/doc/Java编程篇/10Java编程篇：反射.md)
-* [Java虚拟机篇](/doc/Java虚拟机篇)
+* [Java虚拟机篇]()
   * [Java虚拟机篇：Java虚拟机概述](/doc/Java虚拟机篇/01Java虚拟机篇：Java虚拟机概述.md)
   * [Java虚拟机篇：内存结构](/doc/Java虚拟机篇/02Java虚拟机篇：内存结构.md)
