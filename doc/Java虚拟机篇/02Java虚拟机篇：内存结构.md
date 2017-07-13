@@ -13,7 +13,8 @@
 >文章首发于[Github](https://github.com/guoxiaoxing)，后续也会同步在[简书](http://www.jianshu.com/users/66a47e04215b/latest_articles)与
 [CSDN](http://blog.csdn.net/allenwells)等博客平台上。文章中如果有什么问题，欢迎发邮件与我交流，邮件可发至guoxiaoxingse@163.com。
 
-Java虚拟机在运行Java程序时会将它管理的内存划分为若干个不同的区域，这些区域有着各自的功能以及创建、销毁时间。如下图所示：
+Java虚拟机在运行Java程序时会将它管理的内存划分为若干个不同的区域，这些区域有着各自的功能以及创建、销毁时间。其中程序计数器、虚拟机栈
+与本地方法栈随线程而生，随线程而灭。而方法区与Java堆则由线程共享，在虚拟机启动时创建。
 
 <img src="https://github.com/guoxiaoxing/java/raw/master/art/jvm/02/jvm_memory_structure.png"/>
 
@@ -31,6 +32,63 @@ Java虚拟机在运行Java程序时会将它管理的内存划分为若干个不
 - OutOfMemoryError：如果虚拟机栈是可以动态扩展的，当扩展时无法申请到足够的内存则抛出该异常。
 
 通过上面关于方法区的描述，我们可以知道造成方法区内存溢出就可能是大佬的常量信息或者是大量的类信息。
+
+## Java堆
+
+>Java堆：线程共享，Java虚拟机管理的内存区域中最大的一块，在虚拟机启动时创建，该区域的作用是存放对象实例。
+
+Java堆是垃圾收集器管理的主要区域，现在GC普遍采用分代收集算法，因此Java堆还可以细分为新生代与老年代。另外，Java堆可以处于物理上不连续的内存空间，只要
+逻辑上连续就可以了。
+
+在Java虚拟机规范中，对该区域规定了一种异常情况：
+
+- OutOfMemoryError：如果虚拟机栈是可以动态扩展的，当扩展时无法申请到足够的内存则抛出该异常。
+
+也就是说当我们不断地创建对象，当对象数量达到了最大堆容量限制之后就会产生OutOfMemoryError。
+
+**举例**
+
+1 指定堆的最大值与最小值
+
+- -Xmx<size>：最大值，-Xmx1000m
+- -Xms<size>：最小值，-Xms1000m
+
+笔者使用的是Android Studio，还可以在gradle.properties中指定：
+
+```java
+org.gradle.jvmargs=-Xmx1000m
+
+2 不断的去创建对象
+
+```java
+//不断的去创建对象
+private void triggerOutOfMemory() {
+    List<OutOfMemoryObject> list = new ArrayList<>();
+    while (true) {
+        list.add(new OutOfMemoryObject());
+    }
+}
+
+```
+
+程序运行时抛出异常：
+
+```java
+Process: com.guoxiaoxing.java.demo, PID: 5508
+  java.lang.OutOfMemoryError: Failed to allocate a 30536292 byte allocation with 18525904 free bytes and 17MB until OOM
+     at java.util.ArrayList.add(ArrayList.java:118)
+     at triggerVMStackOOM(JvmActivity.java:38)
+     at com.guoxiaoxing.java.demo.jvm.memory.MemoryActivity.onClick(JvmActivity.java:27)
+     at android.view.View.performClick(View.java:5207)
+     at android.view.View$PerformClick.run(View.java:21177)
+     at android.os.Handler.handleCallback(Handler.java:739)
+     at android.os.Handler.dispatchMessage(Handler.java:95)
+     at android.os.Looper.loop(Looper.java:148)
+     at android.app.ActivityThread.main(ActivityThread.java:5438)
+     at java.lang.reflect.Method.invoke(Native Method)
+     at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:739)
+     at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:629)
+```
 
 ## 虚拟机栈
 
@@ -85,22 +143,22 @@ stackOverflowObject.stackLeak();
 ```java
 Process: com.guoxiaoxing.java.demo, PID: 5309
   java.lang.StackOverflowError: stack size 8MB
-     at com.guoxiaoxing.java.demo.jvm.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
-     at com.guoxiaoxing.java.demo.jvm.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
-     at com.guoxiaoxing.java.demo.jvm.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
-     at com.guoxiaoxing.java.demo.jvm.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
-     at com.guoxiaoxing.java.demo.jvm.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
-     at com.guoxiaoxing.java.demo.jvm.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
-     at com.guoxiaoxing.java.demo.jvm.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
-     at com.guoxiaoxing.java.demo.jvm.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
-     at com.guoxiaoxing.java.demo.jvm.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
-     at com.guoxiaoxing.java.demo.jvm.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
-     at com.guoxiaoxing.java.demo.jvm.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
-     at com.guoxiaoxing.java.demo.jvm.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
-     at com.guoxiaoxing.java.demo.jvm.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
-     at com.guoxiaoxing.java.demo.jvm.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
-     at com.guoxiaoxing.java.demo.jvm.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
-     at com.guoxiaoxing.java.demo.jvm.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
+     at com.guoxiaoxing.java.demo.jvm.memory.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
+     at com.guoxiaoxing.java.demo.jvm.memory.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
+     at com.guoxiaoxing.java.demo.jvm.memory.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
+     at com.guoxiaoxing.java.demo.jvm.memory.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
+     at com.guoxiaoxing.java.demo.jvm.memory.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
+     at com.guoxiaoxing.java.demo.jvm.memory.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
+     at com.guoxiaoxing.java.demo.jvm.memory.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
+     at com.guoxiaoxing.java.demo.jvm.memory.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
+     at com.guoxiaoxing.java.demo.jvm.memory.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
+     at com.guoxiaoxing.java.demo.jvm.memory.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
+     at com.guoxiaoxing.java.demo.jvm.memory.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
+     at com.guoxiaoxing.java.demo.jvm.memory.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
+     at com.guoxiaoxing.java.demo.jvm.memory.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
+     at com.guoxiaoxing.java.demo.jvm.memory.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
+     at com.guoxiaoxing.java.demo.jvm.memory.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
+     at com.guoxiaoxing.java.demo.jvm.memory.StackOverflowObject.stackLeak(StackOverflowObject.java:16)
 ```
 
 这便是发生StackOverFlowError的情况，当栈帧太大/太多或者虚拟机栈容量太小都会导致StackOverFlowError。那么什么时候会发生OutOfMemoryError，我们知道
@@ -113,63 +171,6 @@ Process: com.guoxiaoxing.java.demo, PID: 5309
 本地方法栈也同虚拟机栈一样规定了StackOverFlowError与OutOfMemoryError两种异常。
 
 值得一提的是，我们常用的HotSpot虚拟机并不区分虚拟机栈与本地方法栈，它们是一体的。
-
-## Java堆
-
->Java堆：线程共享，Java虚拟机管理的内存区域中最大的一块，在虚拟机启动时创建，该区域的作用是存放对象实例。
-
-Java堆是垃圾收集器管理的主要区域，现在GC普遍采用分代收集算法，因此Java堆还可以细分为新生代与老年代。另外，Java堆可以处于物理上不连续的内存空间，只要
-逻辑上连续就可以了。
-
-在Java虚拟机规范中，对该区域规定了一种异常情况：
-
-- OutOfMemoryError：如果虚拟机栈是可以动态扩展的，当扩展时无法申请到足够的内存则抛出该异常。
-
-也就是说当我们不断地创建对象，当对象数量达到了最大堆容量限制之后就会产生OutOfMemoryError。
-
-**举例**
-
-1 指定堆的最大值与最小值
-
-- -Xmx<size>：最大值，-Xmx1000m
-- -Xms<size>：最小值，-Xms1000m
-
-笔者使用的是Android Studio，还可以在gradle.properties中指定：
-
-```java
-org.gradle.jvmargs=-Xmx1000m
-
-2 不断的去创建对象
-
-```java
-//不断的去创建对象
-private void triggerOutOfMemory() {
-    List<OutOfMemoryObject> list = new ArrayList<>();
-    while (true) {
-        list.add(new OutOfMemoryObject());
-    }
-}
-
-```
-
-程序运行时抛出异常：
-
-```java
-Process: com.guoxiaoxing.java.demo, PID: 5508
-  java.lang.OutOfMemoryError: Failed to allocate a 30536292 byte allocation with 18525904 free bytes and 17MB until OOM
-     at java.util.ArrayList.add(ArrayList.java:118)
-     at triggerVMStackOOM(JvmActivity.java:38)
-     at com.guoxiaoxing.java.demo.jvm.JvmActivity.onClick(JvmActivity.java:27)
-     at android.view.View.performClick(View.java:5207)
-     at android.view.View$PerformClick.run(View.java:21177)
-     at android.os.Handler.handleCallback(Handler.java:739)
-     at android.os.Handler.dispatchMessage(Handler.java:95)
-     at android.os.Looper.loop(Looper.java:148)
-     at android.app.ActivityThread.main(ActivityThread.java:5438)
-     at java.lang.reflect.Method.invoke(Native Method)
-     at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:739)
-     at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:629)
-```
 
 ## 程序计数器
 

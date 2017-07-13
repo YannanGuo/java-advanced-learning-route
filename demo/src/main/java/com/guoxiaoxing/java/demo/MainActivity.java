@@ -7,7 +7,8 @@ import android.view.View;
 
 import com.guoxiaoxing.java.demo.annotation.AnnotationActivity;
 import com.guoxiaoxing.java.demo.collection.CollectionActivity;
-import com.guoxiaoxing.java.demo.jvm.JvmActivity;
+import com.guoxiaoxing.java.demo.jvm.gc.GCActivity;
+import com.guoxiaoxing.java.demo.jvm.memory.MemoryActivity;
 import com.guoxiaoxing.java.demo.object.ObjectActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -20,7 +21,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.btn_annotation).setOnClickListener(this);
         findViewById(R.id.btn_object).setOnClickListener(this);
         findViewById(R.id.btn_collection).setOnClickListener(this);
-        findViewById(R.id.btn_jvm).setOnClickListener(this);
+        findViewById(R.id.btn_jvm_memory).setOnClickListener(this);
+        findViewById(R.id.btn_jvm_gc).setOnClickListener(this);
     }
 
     @Override
@@ -35,8 +37,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_collection:
                 startActivity(new Intent(MainActivity.this, CollectionActivity.class));
                 break;
-            case R.id.btn_jvm:
-                startActivity(new Intent(MainActivity.this, JvmActivity.class));
+            case R.id.btn_jvm_memory:
+                startActivity(new Intent(MainActivity.this, MemoryActivity.class));
+                break;
+            case R.id.btn_jvm_gc:
+                startActivity(new Intent(MainActivity.this, GCActivity.class));
                 break;
         }
     }

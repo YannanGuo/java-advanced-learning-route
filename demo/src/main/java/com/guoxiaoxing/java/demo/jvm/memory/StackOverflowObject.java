@@ -1,4 +1,4 @@
-package com.guoxiaoxing.java.demo.jvm;
+package com.guoxiaoxing.java.demo.jvm.memory;
 
 /**
  * For more information, you can visit https://github.com/guoxiaoxing or contact me by

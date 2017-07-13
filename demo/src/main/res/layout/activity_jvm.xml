@@ -27,4 +27,11 @@
         android:layout_height="wrap_content"
         android:text="Method Area OutOfMemoryError"
         android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/btn_jvm_gc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="GC"
+        android:textAllCaps="false" />
 </LinearLayout>

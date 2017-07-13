@@ -1,4 +1,4 @@
-package com.guoxiaoxing.java.demo.jvm;
+package com.guoxiaoxing.java.demo.jvm.memory;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,7 +9,7 @@ import com.guoxiaoxing.java.demo.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JvmActivity extends AppCompatActivity implements View.OnClickListener {
+public class MemoryActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

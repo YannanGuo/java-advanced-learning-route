@@ -22,7 +22,8 @@
         <activity android:name=".object.ObjectActivity" />
         <activity android:name=".collection.CollectionActivity" />
         <activity android:name=".concurrence.ConcurrenceActivity" />
-        <activity android:name=".jvm.JvmActivity"></activity>
+        <activity android:name=".jvm.memory.MemoryActivity" />
+        <activity android:name=".jvm.gc.GCActivity"></activity>
     </application>
 
 </manifest>
