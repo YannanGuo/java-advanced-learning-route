@@ -8,7 +8,7 @@
 
 ## Java编程篇
 
-- [01Java编程篇：对象]()
+- [01Java编程篇：对象](https://github.com/guoxiaoxing/java/blob/master/doc/Java编程篇/01Java编程篇：对象.md)
 - 02Java编程篇：类与接口
 - 03Java编程篇：泛型
 - 04Java编程篇：集合
@@ -19,8 +19,8 @@
 
 ## Java虚拟机篇
 
-- [01Java虚拟机篇：Java虚拟机概述]()
-- 02Java虚拟机篇：内存结构
+- [01Java虚拟机篇：Java虚拟机概述](https://github.com/guoxiaoxing/java/blob/master/doc/Java虚拟机篇/01Java虚拟机篇：Java虚拟机概述.md)
+- [02Java虚拟机篇：内存结构](https://github.com/guoxiaoxing/java/blob/master/doc/Java虚拟机篇/02Java虚拟机篇：内存结构.md)
 - 03Java虚拟机篇：内存分配与垃圾回收
 - 03Java虚拟机篇：内存模型与现场
 - 04Java虚拟机篇：线程安全与线程锁
