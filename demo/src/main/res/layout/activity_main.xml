@@ -35,5 +35,12 @@
             android:layout_height="wrap_content"
             android:text="Collection"
             android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/btn_jvm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="JVM"
+            android:textAllCaps="false" />
     </LinearLayout>
 </ScrollView>

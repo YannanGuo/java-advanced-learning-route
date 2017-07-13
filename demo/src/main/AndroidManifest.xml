@@ -21,7 +21,8 @@
         <activity android:name=".io.OutputStreamActivity" />
         <activity android:name=".object.ObjectActivity" />
         <activity android:name=".collection.CollectionActivity" />
-        <activity android:name=".concurrence.ConcurrenceActivity"></activity>
+        <activity android:name=".concurrence.ConcurrenceActivity" />
+        <activity android:name=".jvm.JvmActivity"></activity>
     </application>
 
 </manifest>
