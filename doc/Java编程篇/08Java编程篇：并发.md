@@ -23,5 +23,4 @@ public interface Runnable {
 ```
 
 
-
 1 同步访问共享的可变数据。
