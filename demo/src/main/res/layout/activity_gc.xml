@@ -14,4 +14,12 @@
         android:text="Mutual Refrence"
         android:textAllCaps="false" />
 
+    <Button
+        android:id="@+id/btn_gc_save_selft"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save Self"
+        android:textAllCaps="false" />
+
+
 </LinearLayout>

@@ -16,6 +16,7 @@ public class GCActivity extends AppCompatActivity implements View.OnClickListene
         setContentView(R.layout.activity_gc);
 
         findViewById(R.id.btn_gc_mutual_refrence).setOnClickListener(this);
+        findViewById(R.id.btn_gc_save_selft).setOnClickListener(this);
     }
 
     @Override
@@ -23,6 +24,9 @@ public class GCActivity extends AppCompatActivity implements View.OnClickListene
         switch (v.getId()){
             case R.id.btn_gc_mutual_refrence:
                 triggerMutualReference();
+                break;
+            case R.id.btn_gc_save_selft:
+                saveSelf();
                 break;
         }
     }
@@ -39,5 +43,37 @@ public class GCActivity extends AppCompatActivity implements View.OnClickListene
         gcObjectB = null;
 
         System.gc();
+    }
+
+    private void saveSelf(){
+        SaveSelfObject.SAVE_SELF = new SaveSelfObject();
+
+        //第一次执行
+        SaveSelfObject.SAVE_SELF = null;
+        System.gc();
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if(SaveSelfObject.SAVE_SELF == null){
+            Log.d(App.TAG, "The SAVE_SELF is dead");
+        }else {
+            Log.d(App.TAG, "The SAVE_SELF is alive");
+        }
+
+        //第二次知悉
+        SaveSelfObject.SAVE_SELF = null;
+        System.gc();
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if(SaveSelfObject.SAVE_SELF == null){
+            Log.d(App.TAG, "The SAVE_SELF is dead");
+        }else {
+            Log.d(App.TAG, "The SAVE_SELF is alive");
+        }
     }
 }

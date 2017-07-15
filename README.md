@@ -2,6 +2,8 @@
 
 >本系列文章讨论JDK Framework、JVM以及关于Java的一些最佳实践。
 
+[点击进入GitBook阅读](https://guoxiaoxing.gitbooks.io/java/content/)
+
 - [Open JDK](http://openjdk.java.net/)
 - [Java SE](http://www.oracle.com/technetwork/java/javase/overview/index.html)
 - [Java SE Document](http://docs.oracle.com/javase/8/)
