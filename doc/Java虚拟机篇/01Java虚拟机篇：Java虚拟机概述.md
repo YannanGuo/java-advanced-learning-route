@@ -24,3 +24,10 @@ JVM作为Java技术体系的重要组成部分，随着Java语言的发展，JVM
 这些运行在Java虚拟机之上，Java语言之外的语言，正在推动着Java虚拟机从"Java语言的虚拟机"发展成"多语言虚拟机"发展。
 
 要理解JVM以及JDK内部的实现机制，最便捷的途径莫过于在即去编译一套JDK，通过跟踪调试去理解Java技术体系的原理。
+
+
+
+
+## 附录
+
+- [jclasslib](http://git.oschina.net/mirrors/jclasslib)：字节码查看工具

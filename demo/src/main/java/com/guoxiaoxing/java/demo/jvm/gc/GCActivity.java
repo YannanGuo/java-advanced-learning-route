@@ -52,7 +52,7 @@ public class GCActivity extends AppCompatActivity implements View.OnClickListene
         SaveSelfObject.SAVE_SELF = null;
         System.gc();
         try {
-            Thread.sleep(500);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -66,7 +66,7 @@ public class GCActivity extends AppCompatActivity implements View.OnClickListene
         SaveSelfObject.SAVE_SELF = null;
         System.gc();
         try {
-            Thread.sleep(500);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
