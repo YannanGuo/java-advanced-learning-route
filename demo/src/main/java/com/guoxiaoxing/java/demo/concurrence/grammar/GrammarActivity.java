@@ -1,4 +1,4 @@
-package com.guoxiaoxing.java.demo.grammar;
+package com.guoxiaoxing.java.demo.concurrence.grammar;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

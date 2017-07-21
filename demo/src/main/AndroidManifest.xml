@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".annotation.AnnotationActivity" />
-        <activity android:name=".grammar.GrammarActivity" />
+        <activity android:name=".concurrence.grammar.GrammarActivity" />
         <activity android:name=".io.OutputStreamActivity" />
         <activity android:name=".object.ObjectActivity" />
         <activity android:name=".collection.CollectionActivity" />

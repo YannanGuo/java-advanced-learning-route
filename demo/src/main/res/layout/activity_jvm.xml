@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.guoxiaoxing.java.demo.grammar.GrammarActivity">
+    tools:context="com.guoxiaoxing.java.demo.concurrence.grammar.GrammarActivity">
 
     <Button
         android:id="@+id/btn_jvm_vm_stack_oom"
