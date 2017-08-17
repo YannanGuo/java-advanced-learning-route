@@ -29,7 +29,7 @@ public class StandardClass {
 ```
 它的十六进制结构如下：
 
-
+<img src="https://github.com/guoxiaoxing/java/raw/8a6ae84ba4b8284b2cf036468af267780e773c1c/art/jvm/class_hex_structure.png"/>
 
 >魔数：1-4字节，用来确定这个文件是否为一个能被虚拟机接受的Class文件，它的值为0xCAFEBABE。
 
