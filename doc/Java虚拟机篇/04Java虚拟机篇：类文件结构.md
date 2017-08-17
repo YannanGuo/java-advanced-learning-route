@@ -41,13 +41,13 @@ javac StandardClass.java编
 
 它的十六进制结构如下：
 
-<img src="https://github.com/guoxiaoxing/java/raw/8a6ae84ba4b8284b2cf036468af267780e773c1c/art/jvm/class_hex_structure.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/jvm/class_hex_structure.png"/>
 
 >魔数：1-4字节，用来确定这个文件是否为一个能被虚拟机接受的Class文件，它的值为0xCAFEBABE。
 
 如图所示：
 
-<img src="https://github.com/guoxiaoxing/java/raw/8a6ae84ba4b8284b2cf036468af267780e773c1c/art/jvm/class_hex_structure_1.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/jvm/class_hex_structure_1.png"/>
 
 1-4字节就是魔数。
 
@@ -55,7 +55,7 @@ javac StandardClass.java编
 
 如果所示：
 
-<img src="https://github.com/guoxiaoxing/java/raw/8a6ae84ba4b8284b2cf036468af267780e773c1c/art/jvm/class_hex_structure_2.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/jvm/class_hex_structure_2.png"/>
 
 5-6字节是次版本号0x0000（即0），7-8字节是主版本号0x0034（即52）.
 
@@ -64,7 +64,7 @@ javac StandardClass.java编
 
 如果所示：
 
-<img src="https://github.com/guoxiaoxing/java/raw/8a6ae84ba4b8284b2cf036468af267780e773c1c/art/jvm/class_hex_structure_3.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/jvm/class_hex_structure_3.png"/>
 
 9-10字节是常量池容器计数0x000f（即15）。说明常量池里有14个常量，从1-14.
 
@@ -74,12 +74,9 @@ javac StandardClass.java编
 javap -verbose StandardClass.class
 ```
 
-![](https://github.com/guoxiaoxing/java/raw/8a6ae84ba4b8284b2cf036468af267780e773c1c/art/jvm/class_constant_pool.png)
-
-<img src="https://github.com/guoxiaoxing/java/raw/8a6ae84ba4b8284b2cf036468af267780e773c1c/art/jvm/class_constant_pool.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/jvm/class_contant_pool.png"/>
 
 如图所示，正如我们分析的那样，常量池里有14个常量，
-
 
 常量池主要存放字面量与符号引用。字面量包括：
 
