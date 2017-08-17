@@ -74,6 +74,8 @@ javac StandardClass.java编
 javap -verbose StandardClass.class
 ```
 
+![](https://github.com/guoxiaoxing/java/raw/8a6ae84ba4b8284b2cf036468af267780e773c1c/art/jvm/class_constant_pool.png)
+
 <img src="https://github.com/guoxiaoxing/java/raw/8a6ae84ba4b8284b2cf036468af267780e773c1c/art/jvm/class_constant_pool.png"/>
 
 如图所示，正如我们分析的那样，常量池里有14个常量，
