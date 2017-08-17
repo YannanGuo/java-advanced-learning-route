@@ -43,6 +43,8 @@ javac StandardClass.java编
 
 <img src="https://github.com/guoxiaoxing/java/raw/master/art/jvm/class_hex_structure.png"/>
 
+### 魔数
+
 >魔数：1-4字节，用来确定这个文件是否为一个能被虚拟机接受的Class文件，它的值为0xCAFEBABE。
 
 如图所示：
@@ -51,6 +53,8 @@ javac StandardClass.java编
 
 1-4字节就是魔数。
 
+### 版本号
+
 >版本号：5-6字节是次版本号，7-8字节是主版本号
 
 如果所示：
@@ -58,6 +62,8 @@ javac StandardClass.java编
 <img src="https://github.com/guoxiaoxing/java/raw/master/art/jvm/class_hex_structure_2.png"/>
 
 5-6字节是次版本号0x0000（即0），7-8字节是主版本号0x0034（即52）.
+
+### 常量池计数/常量池
 
 >常量池计数：常量池中常量的数量不是固定的，因此常量池入口处会防止一项u2类型的数据，代表常量池容器计数。注意容器计数从1开始，索引为0代表不引用任何一个
 常量池的项目。
@@ -76,11 +82,23 @@ javap -verbose StandardClass.class
 
 <img src="https://github.com/guoxiaoxing/java/raw/master/art/jvm/class_constant_pool.png"/>
 
-如图所示，正如我们分析的那样，常量池里有14个常量，
+如图所示，正如我们分析的那样，常量池里有14个常量。比方说我们看下第13个常量表示的类的全限定名，它对应的十六进制如下所示：
+
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/jvm/class_hex_structure_4.png"/>
 
 常量池主要存放字面量与符号引用。字面量包括：
 
 - 类与接口的全限定名
 - 字段的名称与描述符
 - 方法的名称与描述符
+
+常量池中每一项常量都是一个表，目前共有14种表结构，如下所示：
+
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/jvm/constant_pool_data_type.png"/>
+
+### 访问标志
+
+>访问标志：常量池之后就是访问标志，该标志用于识别一些类或则接口层次的访问信息。
+
+这些访问信息包括：
 
