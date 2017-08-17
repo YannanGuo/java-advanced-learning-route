@@ -2,16 +2,7 @@
 
 **关于作者**
 
->郭孝星，非著名程序员，主要从事Android平台基础架构与中间件方面的工作，爱好广泛，技术栈主要涉及以下几个方面
->
->- Android/Linux
->- Java/Kotlin/JVM
->- Python
->- JavaScript/React/ReactNative
->- DataStructure/Algorithm
->
->文章首发于[Github](https://github.com/guoxiaoxing)，后续也会同步在[简书](http://www.jianshu.com/users/66a47e04215b/latest_articles)与
-[CSDN](http://blog.csdn.net/allenwells)等博客平台上。文章中如果有什么问题，欢迎发邮件与我交流，邮件可发至guoxiaoxingse@163.com。
+>郭孝星，非著名程序员，主要从事Android平台基础架构与中间件方面的工作，欢迎交流技术方面的问题，可以去我的[Github](https://github.com/guoxiaoxing)提交Issue或者发邮件至guoxiaoxingse@163.com与我联系。http://blog.csdn.net/allenwells)等博客平台上。文章中如果有什么问题，欢迎发邮件与我交流，邮件可发至guoxiaoxingse@163.com。
 
 Java虚拟机在运行Java程序时会将它管理的内存划分为若干个不同的区域，这些区域有着各自的功能以及创建、销毁时间。其中程序计数器、虚拟机栈
 与本地方法栈随线程而生，随线程而灭。而方法区与Java堆则由线程共享，在虚拟机启动时创建。

@@ -38,6 +38,7 @@ public class CollectionActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void printList() {
+
         List<String> arrayList1 = new ArrayList<>();
         arrayList1.add("a");
         arrayList1.add("b");
