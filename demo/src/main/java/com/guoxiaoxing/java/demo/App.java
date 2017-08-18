@@ -12,7 +12,7 @@ import com.orhanobut.logger.Logger;
  * @author guoxiaoxing
  * @since 2017/7/6 下午3:12
  */
-public class App extends Application {
+public final class App extends Application {
 
     public static final String TAG = "Java";
 

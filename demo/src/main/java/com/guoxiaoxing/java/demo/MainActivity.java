@@ -11,7 +11,7 @@ import com.guoxiaoxing.java.demo.jvm.gc.GCActivity;
 import com.guoxiaoxing.java.demo.jvm.memory.MemoryActivity;
 import com.guoxiaoxing.java.demo.object.ObjectActivity;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public final class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

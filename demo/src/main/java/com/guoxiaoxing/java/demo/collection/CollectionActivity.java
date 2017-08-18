@@ -9,6 +9,7 @@ import android.view.View;
 import com.guoxiaoxing.java.demo.App;
 import com.guoxiaoxing.java.demo.R;
 
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -76,5 +77,20 @@ public class CollectionActivity extends AppCompatActivity implements View.OnClic
         for (String str : arrayList2) {
             Log.d(App.TAG, str);
         }
+    }
+
+    private List<Integer> createArrayList(){
+
+        return new AbstractList<Integer>() {
+            @Override
+            public Integer get(int index) {
+                return null;
+            }
+
+            @Override
+            public int size() {
+                return 0;
+            }
+        };
     }
 }
