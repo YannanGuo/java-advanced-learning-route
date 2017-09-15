@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.guoxiaoxing.java.demo.concurrence.grammar.GrammarActivity">
+
+    <Button
+        android:id="@+id/btn_thread_thread_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="thrad info"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/btn_thread_interrupt_thread"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="interrupt thrad"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/btn_thread_thread_priority"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="interrupt thrad"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/btn_thread_synchronized"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="synchronized"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/btn_thread_volatile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="volatile"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/btn_thread_current_thread"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="current thrad"
+        android:textAllCaps="false" />
+</LinearLayout>

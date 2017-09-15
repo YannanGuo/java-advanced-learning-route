@@ -10,20 +10,31 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
+
+        </activity>
+
+        <activity android:name=".annotation.AnnotationActivity" />
+
+        <activity android:name=".concurrence.grammar.GrammarActivity" />
+
+        <activity android:name=".io.OutputStreamActivity" />
+
+        <activity android:name=".object.ObjectActivity" />
+
+        <activity android:name=".collection.CollectionActivity" />
+
+        <activity android:name=".concurrence.ConcurrenceActivity" />
+
+        <activity android:name=".jvm.memory.MemoryActivity" />
+
+        <activity android:name=".jvm.gc.GCActivity" />
+
+        <activity android:name=".thread.ThreadActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".annotation.AnnotationActivity" />
-        <activity android:name=".concurrence.grammar.GrammarActivity" />
-        <activity android:name=".io.OutputStreamActivity" />
-        <activity android:name=".object.ObjectActivity" />
-        <activity android:name=".collection.CollectionActivity" />
-        <activity android:name=".concurrence.ConcurrenceActivity" />
-        <activity android:name=".jvm.memory.MemoryActivity" />
-        <activity android:name=".jvm.gc.GCActivity"></activity>
     </application>
 
 </manifest>
