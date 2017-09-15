@@ -176,6 +176,15 @@ public class ThreadActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         Log.d(TAG, "start = " + start);
+
+        try {
+            Log.d(TAG, "try");
+            return;
+        }catch (Exception e){
+            Log.d(TAG, "catch");
+        }finally {
+            Log.d(TAG, "finally");
+        }
     }
 
     private void currentThread() {
