@@ -187,7 +187,6 @@ public static ExecutorService newSingleThreadExecutor() {
 - ThreadPool：线程池，把任务分解成不同的单元，分发到各个不同的线程上，进行同时并发处理。
 - IntentService：适用于由UI触发的后台Service任务，并可以把后台任务的执行情况反馈给UI。
 
-
 ### 
 
 AsyncTask
