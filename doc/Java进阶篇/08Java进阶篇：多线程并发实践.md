@@ -136,9 +136,18 @@ public ThreadPoolExecutor(int corePoolSize,
 - ThreadFactory threadFactory：线程工程
 - RejectedExecutionHandler handler：线程拒绝策略
 
+线程池的五种状态：
+
+- RUNNING：可以接受新任务，也可以处理等待队列里的任务。
+- SHUTDOWN：不接受新任务，但可以处理等待队列里的任务。
+- STOP：不接受新的任务，不再处理等待队列里的任务。中断正在处理的任务。
+- TIDYING：所有任务都已经处理完了，当前线程池没有有效的线程，并且即将调用terminated()方法。
+- TERMINATED：调用了erminated()方法，线程池终止。
+
+
 Executors提供了一系列工厂方法用来创建线程池。
 
-- newCachedThreadPool()：缓存线程池，查看线程池中有没有以前建立的线程，如果有则复用，如果没有则建立一个新的线程加入池中，池中的线程超过60s不活动则自动终止。适用于生命
+- newCachedThreadPool()：无界可自动回收线程池，查看线程池中有没有以前建立的线程，如果有则复用，如果没有则建立一个新的线程加入池中，池中的线程超过60s不活动则自动终止。适用于生命
 周期比较短的异步任务。
 
 ```java
@@ -149,7 +158,7 @@ public static ExecutorService newCachedThreadPool() {
 }
 ```
 
-- newFixedThreadPool(int nThreads)：固定线程数缓存线程池，与newCachedThreadPool()类似，但是池中持有固定数目的线程，不能随时创建线程，如果创建新线程时，超过了固定
+- newFixedThreadPool(int nThreads)：固定大小线程池，与newCachedThreadPool()类似，但是池中持有固定数目的线程，不能随时创建线程，如果创建新线程时，超过了固定
 线程数，则放在队列里等待，直到池中的某个线程被移除时，才加入池中。适用于很稳定、很正规的并发线程，多用于服务器。
 
 
@@ -161,7 +170,7 @@ public static ExecutorService newFixedThreadPool(int nThreads) {
 }
 ```
 
-- newScheduledThreadPool(int corePoolSize)：该线程池的线程可以按照delay依次执行线程，也可以周期执行。
+- newScheduledThreadPool(int corePoolSize)：周期任务线程池，该线程池的线程可以按照delay依次执行线程，也可以周期执行。
 
 ```java
 public static ScheduledExecutorService newScheduledThreadPool(int corePoolSize) {
@@ -169,7 +178,7 @@ public static ScheduledExecutorService newScheduledThreadPool(int corePoolSize) 
 }
 ```
 
-- newSingleThreadExecutor()：单例线程，任意时间内池中只有一个线程。
+- newSingleThreadExecutor()：单例线程池，任意时间内池中只有一个线程。
 
 ```java
 public static ExecutorService newSingleThreadExecutor() {

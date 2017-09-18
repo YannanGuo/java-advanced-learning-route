@@ -275,29 +275,15 @@ public class ThreadActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void threadPool() {
-
         ExecutorService executorService = Executors.newCachedThreadPool();
-
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                Log.d(TAG, "I am runnable");
-            }
-        };
-
-        Callable callable = new Callable() {
-            @Override
-            public Object call() throws Exception {
-                Log.d(TAG, "I am runnable");
-                return "callable";
-            }
-        };
-
-        executorService.submit(runnable);
-        Future<Object> result = executorService.submit(callable);
-
         try {
-            Log.d(TAG, "Callable reslut: " + result.get());
+            String result = executorService.submit(new Callable<String>() {
+                @Override
+                public String call() throws Exception {
+                    return "I am Callable result";
+                }
+            }).get();
+            Log.d(TAG, result);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
