@@ -9,6 +9,12 @@ import android.view.View;
 
 import com.guoxiaoxing.java.demo.R;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 /**
  * For more information, you can visit https://github.com/guoxiaoxing or contact me by
  * guoxiaoxingse@163.com.
@@ -30,6 +36,8 @@ public class ThreadActivity extends AppCompatActivity implements View.OnClickLis
         findViewById(R.id.btn_thread_thread_priority).setOnClickListener(this);
         findViewById(R.id.btn_thread_synchronized).setOnClickListener(this);
         findViewById(R.id.btn_thread_volatile).setOnClickListener(this);
+        findViewById(R.id.btn_thread_wait_and_notify).setOnClickListener(this);
+        findViewById(R.id.btn_thread_join).setOnClickListener(this);
         findViewById(R.id.btn_thread_current_thread).setOnClickListener(this);
     }
 
@@ -50,6 +58,15 @@ public class ThreadActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.btn_thread_volatile:
                 volatileKeyword();
+                break;
+            case R.id.btn_thread_wait_and_notify:
+                waitAndNotigy();
+                break;
+            case R.id.btn_thread_join:
+                join();
+                break;
+            case R.id.btn_thread_thread_pool:
+                threadPool();
                 break;
             case R.id.btn_thread_current_thread:
                 currentThread();
@@ -180,10 +197,111 @@ public class ThreadActivity extends AppCompatActivity implements View.OnClickLis
         try {
             Log.d(TAG, "try");
             return;
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.d(TAG, "catch");
-        }finally {
+        } finally {
             Log.d(TAG, "finally");
+        }
+    }
+
+    private void waitAndNotigy() {
+        final String str = new String("I am wait");
+
+        Runnable waitRunnable = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Log.d(TAG, "synchronized before");
+                    synchronized (str) {
+                        Log.d(TAG, "wait before");
+                        str.wait();
+                        Log.d(TAG, "wait after");
+                    }
+                    Log.d(TAG, "synchronized after");
+                } catch (Exception e) {
+                    Log.d(TAG, "waitRunnable error: " + e.getMessage());
+                }
+            }
+        };
+
+        Thread waitThread = new Thread(waitRunnable);
+        waitThread.start();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        Runnable notifyRunnable = new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "synchronized before");
+                synchronized (str) {
+                    Log.d(TAG, "notify before");
+                    str.notify();
+                    Log.d(TAG, "notify after");
+                }
+                Log.d(TAG, "synchronized after");
+            }
+        };
+        Thread notifyThread = new Thread(notifyRunnable);
+        notifyThread.start();
+    }
+
+    private void join() {
+        Runnable joinRunnable = new Runnable() {
+            @Override
+            public void run() {
+                int sleepTIme = (int) (Math.random() * 10000);
+                Log.d(TAG, "sleepTIme: " + sleepTIme);
+                try {
+                    Thread.sleep(sleepTIme);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    Log.d(TAG, "InterruptedException: " + e.getMessage());
+                }
+            }
+        };
+
+        Thread joinThread = new Thread(joinRunnable);
+        joinThread.start();
+        try {
+            joinThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            Log.d(TAG, "InterruptedException: " + e.getMessage());
+        }
+        Log.d(TAG, "joinThread已经执行完毕");
+    }
+
+    private void threadPool() {
+
+        ExecutorService executorService = Executors.newCachedThreadPool();
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "I am runnable");
+            }
+        };
+
+        Callable callable = new Callable() {
+            @Override
+            public Object call() throws Exception {
+                Log.d(TAG, "I am runnable");
+                return "callable";
+            }
+        };
+
+        executorService.submit(runnable);
+        Future<Object> result = executorService.submit(callable);
+
+        try {
+            Log.d(TAG, "Callable reslut: " + result.get());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         }
     }
 

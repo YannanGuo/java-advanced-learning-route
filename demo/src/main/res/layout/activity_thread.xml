@@ -42,6 +42,31 @@
         android:text="volatile"
         android:textAllCaps="false" />
 
+
+    <Button
+        android:id="@+id/btn_thread_wait_and_notify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="wait/notify"
+        android:textAllCaps="false" />
+
+
+    <Button
+        android:id="@+id/btn_thread_join"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="join"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/btn_thread_thread_pool"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="thread pool"
+        android:textAllCaps="false" />
+
+
+
     <Button
         android:id="@+id/btn_thread_current_thread"
         android:layout_width="match_parent"
