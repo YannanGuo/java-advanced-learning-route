@@ -17,7 +17,7 @@
 - 四 线程池应用
     - 4.1 AsyncTask
     
-本篇文章用来分析Java中多线程并发原理与实践。
+本篇文章主要用来讨论Java中多线程并发原理与实践经验，并不是一篇使用例子教程，这方面内容可以参考网上其他文章。
 
 ## 一 线程原理
 
@@ -306,14 +306,6 @@ synchronized是互斥同步的一种实现。
 >synchronized：当某个线程访问被synchronized标记的方法或代码块时，这个线程便获得了该对象的锁，其他线程暂时无法访问这个方法，只有等待这个方法执行完毕或者代码块执行完毕，这个
 线程才会释放该对象的锁，其他线程才能执行这个方法或代码块。
 
-关于synchronized关键字
-                                               
-- synchronized代码块 ：同步代码块，作用范围是整个代码块，作用对象是调用这个代码块的对象。
-- synchronized方法 ：同步方法，作用范围是整个方法，作用对象是调用这个方法的对象。
-- synchronized静态方法 ：同步静态方法，作用范围是整个静态方法，作用对象是调用这个类的所有对象。
-- synchronized(ClassName.class) ：全局锁，作用对象是这个类的所有对象。
-- synchronized(this)：作用范围是该对象中所有被synchronized标记的变量、方法或代码块，作用对象是对象本身。
-
 前面我们已经说了volatile关键字，这里我们举个例子来综合分析volatile与synchronized关键字的使用。
 
 :point_up:举个栗子
@@ -346,9 +338,17 @@ public class Singleton {
 
 <img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/synchronized_bytecode.png"/>
 
-### 2.3 ReentrantLock
+可以看到被synchronized同步的代码块，会在前后分别加上monitorenter和monitorexit，这两个字节码都需要指定加锁和解锁的对象。
 
-ReentrantLock也是互斥同步的一种实现。
+关于加锁和解锁的对象：
+                                               
+- synchronized代码块 ：同步代码块，作用范围是整个代码块，作用对象是调用这个代码块的对象。
+- synchronized方法 ：同步方法，作用范围是整个方法，作用对象是调用这个方法的对象。
+- synchronized静态方法 ：同步静态方法，作用范围是整个静态方法，作用对象是调用这个类的所有对象。
+- synchronized(ClassName.class) ：全局锁，作用对象是这个类的所有对象。
+- synchronized(this)：作用范围是该对象中所有被synchronized标记的变量、方法或代码块，作用对象是对象本身。
+
+关不同步锁还有ReentrantLock，eentrantLockR相对于synchronized具有等待可中断、公平锁等更多功能，这里限于篇幅，不再展开。
 
 ## 三 线程池
 
