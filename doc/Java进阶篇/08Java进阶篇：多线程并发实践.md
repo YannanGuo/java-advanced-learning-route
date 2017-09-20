@@ -15,7 +15,7 @@
     - 2.1 ThreadPoolExecutor
     - 2.2 AsyncTask
     
-本篇文章用来分析Java中多线程并发原理与实践。:thinking:
+本篇文章用来分析Java中多线程并发原理与实践。
 
 ## 一 线程原理
 
