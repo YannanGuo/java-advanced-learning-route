@@ -6,32 +6,69 @@
 
 **文章目录**
 
-- 线程基础
+- 一 线程原理
     - 1.1 线程优先级
     - 1.2 线程状态
-    - 1.3 线程方法
-    - 1.4 线程同步
-- 并发实践
+- 二 线程同步
+- 三 线程池
+- 四 线程池应用
     - 2.1 ThreadPoolExecutor
     - 2.2 AsyncTask
     
 本篇文章用来分析Java中多线程并发原理与实践。:thinking:
 
-## 一 线程基础
+## 一 线程原理
 
->进程（英语：process），是计算机中已运行程序的实体。在Android中进程就是一个运行的应用。
+### 1.1 线程实现
 
->线程（英语：thread）是操作系统能够进行运算调度的最小单位。它被包含在进程之中，是进程中的实际运作单位。一条线程指的是进程中一个单一顺序的控制流，一个进程中可以并发多个线程，每条线程并行执行不同的任务。
+>线程是比进程更加轻量级的调度单位，线程的引入可以把进程的资源分配和执行调度分开，各个线程既可以共享进程资源，又可以独立调度。
 
-简单莱索，线程就是进程更加细粒度的划分，是独立调度的最小单位。
+简单来说，线程就是进程更加细粒度的划分，是独立调度的最小单位。
 
->线程安全是编程中的术语，指某个函数、函数库在多线程环境中被调用时，能够正确地处理多个线程之间的共享变量，使程序功能正确完成。
+线程在Java里的实现是Thread类，可以发现Thread类都是native方法，这是因为不同的操作系统对线程有不同的实现方式，而Java则在不同的硬件
+和操作系统平台下对线程的操作进行了统一处理。
 
-### 1.1 线程优先级
+那我们来思考一个问题，Java线程的本质是什么？它是怎么实现的？:thinking:
+
+Java线程始终还是要映射到系统的线程中来，如下图所示：
+
+这里面牵扯三个概念：
+
+>内核线程：Kernel Level Thread，它是直接由系统内核支持的线程，该线程有系统内核完成切换，通过调度器把每个线程映射到每个处理器上。
+>轻量级进程：Light Weight Process，它不是进程，不要被它的名字迷惑了。它是供应用程序使用的一种高级接口，它在底层由内核线程支持，一一对应。它的各种线程操作也都
+基于内核线程实现。
+
+优点：
+
+- 实现简单，线程的创建、调度与销毁都有内核来完成。
+
+缺点：
+
+- 基于内核实现，需要进行系统调用，也就是内核态和用户态的切换，代价相对较高，且需要消耗系统资源。
+
+>用户线程：User Thread，完全建立在用户空间的线程称为用户线程，用户线程的建立、调度和销毁都在用户态里完成。
+
+优点：
+
+- 用户线程的建立、调度和销毁都在用户态里完成，代价低廉，可以支持大规模用户线程并发。
+
+缺点：
+
+- 缺少内核的支持，线程的各种操作都需要自己实现，实现起来很复杂。
+
+
+所以上图描述的就是基于用户线程和轻量级进程的混合实现，可以结合各方的优点。但注意不同平台的Java虚拟机对线程模型的实现是不一样的，有的采用了内核线程来实现，
+有的采用了用户线程实现，而有的则采用了我们上述的混合模式。不过Java平台屏蔽了这些差异，说到底，虽然有上层的层层包装，Java线程最终还是对应了系统的内核线程。
+
+另外Java线程的调度是采用抢占式调度的方式，每个系统由操作系统来分配执行时间，线程的切换不由自己控制，由操作系统来完成。抢占式调度的情况下，优先级
+高的线程可能会被先执行。
+
+为什么说“可能”呢？上面我们说过Java的线程还是映射到系统原生的线程上来，而Java的线程优先级划分并不和系统的线程优化级一一对应，例如：Java有10种优先级，
+而Windows只有七种。这种情况下就会出现优先级重叠的情况。另外有些系统还会动态的调整线程的优先级。
 
 >线程优先级：每个线程都自己的优先级，优先级高的线程会被优先执行。
 
-关于线程优先级
+关于Java线程优先级
 
 - 最小优先级MIN_PRIORITY = 1，默认优先级NORM_PRIORITY = 5，最大优先级MAX_PRIORITY = 10。
 - 线程优先级具有继承性，例如线程A启动线程B，则B与A有相同的优先级。
@@ -43,12 +80,12 @@
 
 <img src="https://github.com/guoxiaoxing/java/raw/master/art/program/java_thread_state.png"/>
 
-- NEW：线程创建状态，线程创建之后，但是还未启动。
+- NEW：创建状态，线程创建之后，但是还未启动。
 - RUNNABLE：运行状态，处于运行状态的线程，但有可能处于等待状态，例如等待CPU、IO等。
 - WAITING：等待状态，一般是调用了wait()、join()、LockSupport.spark()等方法。
 - TIMED_WAITING：超时等待状态，也就是带时间的等待状态。一般是调用了wait(time)、join(time)、LockSupport.sparkNanos()、LockSupport.sparkUnit()等方法。
 - BLOCKED：阻塞状态，等待锁的释放，例如调用了synchronized增加了锁。
-- TERMINATED：线程终止状态，一般是线程完成任务后退出或者异常终止。 
+- TERMINATED：终止状态，一般是线程完成任务后退出或者异常终止。 
 
 NEW、WAITING、TIMED_WAITING都比较好理解，我们重点说一说RUNNABLE运行态和BLOCKED阻塞态。
 
@@ -68,9 +105,7 @@ NEW、WAITING、TIMED_WAITING都比较好理解，我们重点说一说RUNNABLE�
 - 线程正在等待某个通知
 - 线程调度器调用suspend()方法将该线程挂起
 
-### 1.3 线程方法
-
-提到线程的状态，我们再来理解一下导致状态切换的几个调度方法。
+我们再来看看和线程状态相关的一些方法。
 
 - sleep()方法让当前正在执行的线程在指定时间内暂停执行，正在执行的线程可以通过Thread.currentThread()方法获取。
 - yield()方法放弃线程持有的CPU资源，将其让给其他任务去占用CPU执行时间。但放弃的时间不确定，有可能刚刚放弃，马上又获得CPU时间片。
@@ -81,11 +116,185 @@ NEW、WAITING、TIMED_WAITING都比较好理解，我们重点说一说RUNNABLE�
 - notifyAll()方法可以是所有正在等待队列中等待同一共享资源的全部线程从等待状态退出，进入可运行状态，一般会是优先级高的线程先执行，但是根据虚拟机的实现不同，也有可能是随机执行。
 - join()方法可以让调用它的线程正常执行完成后，再去执行该线程后面的代码，它具有让线程排队的作用。
 
-### 1.5 线程同步
+## 二 线程同步
 
-#### synchronized
+>线程安全，通常所说的线程安全指的是相对的线程安全，它指的是对这个对象单独的操作是线程安全的，我们在调用的时候无需做额外的保障措施。
 
->互斥锁：在Java中，每一个对象都拥有一个锁标记（monitor），也称为监视器，多线程同时访问某个对象时，线程只有获取了该对象的锁才能访问。
+什么叫相对安全？:thinking:
+
+:point_up:举个栗子
+
+我们知道Java里的Vector是个线程安全的类，在多线程环境下对其插入、删除和读取都是安全的，但这仅限于每次只有一个线程对其操作，如果多个线程同时操作
+Vector，那它就不再是线程安全的了。
+
+```java
+    final Vector<String> vector = new Vector<>();
+
+    while (true) {
+        for (int i = 0; i < 10; i++) {
+            vector.add("项：" + i);
+        }
+
+        Thread removeThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < vector.size(); i++) {
+                    vector.remove(i);
+                }
+            }
+        });
+
+        Thread printThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < vector.size(); i++) {
+                    Log.d(TAG, vector.get(i));
+                }
+            }
+        });
+
+        removeThread.start();
+        printThread.start();
+
+        if (Thread.activeCount() >= 20) {
+            return;
+        }
+    }
+```
+
+但是程序却crash了
+
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/vector_thread_safe.png"/>
+
+正确的做法应该是vector对象加上同步锁，如下：
+
+```Java
+        final Vector<String> vector = new Vector<>();
+
+        while (true) {
+            for (int i = 0; i < 10; i++) {
+                vector.add("项：" + i);
+            }
+
+            Thread removeThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    synchronized (vector){
+                        for (int i = 0; i < vector.size(); i++) {
+                            vector.remove(i);
+                        }
+                    }
+                }
+            });
+
+            Thread printThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    synchronized (vector){
+                        for (int i = 0; i < vector.size(); i++) {
+                            Log.d(TAG, vector.get(i));
+                        }
+                    }
+                }
+            });
+
+            removeThread.start();
+            printThread.start();
+
+            if (Thread.activeCount() >= 20) {
+                return;
+            }
+        }
+```
+
+### 2.1 volatile
+
+volatile也是互斥同步的一种实现，不过它非常的轻量级。
+
+volatile有两条关键的语义：
+
+- 保证被volatile修饰的变量对所有线程都是可见的
+- 禁止进行指令重排序
+
+要理解volatile关键字，我们得先从Java的线程模型开始说起。如图所示：
+
+Java内存模型规定了所有字段（这些字段包括实例字段、静态字段等，不包括局部变量、方法参数等，因为这些是线程私有的，并不存在竞争）都存在主内存中，每个线程会
+有自己的工作内存，工作内存里保存了线程所使用到的变量在主内存里的副本拷贝，线程对变量的操作只能在工作内存里进行，而不能直接读写主内存，当然不同内存之间也
+无法直接访问对方的工作内存，也就是说主内存时线程传值的媒介。
+
+我们来理解第一句话：
+
+>保证被volatile修饰的变量对所有线程都是可见的
+
+如何保证可见性？:thinking:
+
+被volatile修饰的变量在工作内存修改后会被强制写回主内存，其他线程在使用时也会强制从主内存刷新，这样就保证了一致性。
+
+关于“保证被volatile修饰的变量对所有线程都是可见的”，有种常见的错误理解：
+
+>错误理解：由于volatile修饰的变量在各个线程里都是一致的，所以基于volatile变量的运算在多线程并发的情况下是安全的。
+
+这句话的前半部分是对的，后半部分却错了，因此它忘记考虑变量的操作是否具有原子性这一问题。
+
+:point_up:举个栗子
+
+```java
+
+    private volatile int start = 0;
+
+    private void volatileKeyword() {
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 10; i++) {
+                    start++;
+                }
+            }
+        };
+
+        for (int i = 0; i < 10; i++) {
+            Thread thread = new Thread(runnable);
+            thread.start();
+        }
+        Log.d(TAG, "start = " + start);
+    }
+
+```
+
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/volatile_thread_safe.png"/>
+
+这段代码启动了10个线程，每次10次自增，按道理最终结果应该是100，但是结果并非如此。
+
+为什么会这样？:thinking:
+
+仔细看一下start++，它其实并非一个原子操作，简单来看，它有两步：
+
+1. 取出start的值，因为有volatile的修饰，这时候的值是正确的。
+2. 自增，但是自增的时候，别的线程可能已经把start加大了，这种情况下就有可能把较小的start写回主内存中。
+
+所以volatile只能保证可见性，在不符合以下场景下我们依然需要通过加锁来保证原子性：
+
+- 运算结果并不依赖变量当前的值，或者只有单一线程修改变量的值。（要么结果不依赖当前值，要么操作是原子性的，要么只要一个线程修改变量的值）
+- 变量不需要与其他状态变量共同参与不变约束
+
+比方说我们会在线程里加个boolean变量，来判断线程是否停止，这种情况就非常适合使用volatile。
+
+我们再来理解第二句话。
+
+- 禁止进行指令重排序
+
+什么是指令重排序？:thinking:
+
+>指令重排序是值指令乱序执行，即在条件允许的情况下，直接运行当前有能力立即执行的后续指令，避开为获取下一条指令所需数据而造成的等待，通过乱序执行的技术，提供执行效率。
+
+指令重排序绘制被volatile修饰的变量的赋值操作前，添加一个内存屏障，指令重排序时不能把后面的指令重排序的内存屏障之前的位置。
+
+关于指令重排序不是本篇文章重点讨论的内容，更多细节可以参考[指令重排序不](https://tech.meituan.com/java-memory-reordering.html)。
+
+### 2.2 synchronized
+
+synchronized是互斥同步的一种实现。
 
 >synchronized：当某个线程访问被synchronized标记的方法或代码块时，这个线程便获得了该对象的锁，其他线程暂时无法访问这个方法，只有等待这个方法执行完毕或者代码块执行完毕，这个
 线程才会释放该对象的锁，其他线程才能执行这个方法或代码块。
@@ -98,19 +307,48 @@ NEW、WAITING、TIMED_WAITING都比较好理解，我们重点说一说RUNNABLE�
 - synchronized(ClassName.class) ：全局锁，作用对象是这个类的所有对象。
 - synchronized(this)：作用范围是该对象中所有被synchronized标记的变量、方法或代码块，作用对象是对象本身。
 
-#### volatile
+前面我们已经说了volatile关键字，这里我们举个例子来综合分析volatile与synchronized关键字的使用。
 
-- 保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的。
-- 禁止进行指令重排序。
+:point_up:举个栗子
 
-## 二 并发实践
+```java
+public class Singleton {
+
+    //volatile保证了：1 instance在多线程并发的可见性 2 禁止instance在操作是的指令重排序
+    private volatile static Singleton instance;
+
+    public static Singleton getInstance() {
+        //第一次判空，保证不必要的同步
+        if (instance == null) {
+            //synchronized对Singleton加全局所，保证每次只要一个线程创建实例
+            synchronized (Singleton.class) {
+                //第二次判空时为了在null的情况下创建实例
+                if (instance == null) {
+                    instance = new Singleton();
+                }
+            }
+        }
+        return instance;
+    }
+}
+```
+
+这是一个经典的DSL单例。
+
+它的字节码如下：
+
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/synchronized_bytecode.png.png"/>
+
+### 2.3 ReentrantLock
+
+ReentrantLock也是互斥同步的一种实现。
+
+## 三 线程池
 
 我们知道线程的创建、切换与销毁都会花费比较大代价，所以很自然的我们使用线程池来复用和管理线程。Java里的线程池我们通常通过ThreadPoolExecutor来实现。
 接下来我们就来分析ThreadPoolExecutor的相关原理，以及ThreadPoolExecutor在Android上的应用AsyncTask。
 
-### 2.1 ThreadPoolExecutor
-
-#### 线程池调度
+### 3.1 线程池调度
 
 线程池有五种运行状态，如下所示：
 
@@ -391,7 +629,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 }
 ```
 
-#### 线程池配置
+### 3.2 线程池配置
 
 我们先来看看ThreadPoolExecutor的构造方法：
 
@@ -489,7 +727,7 @@ RejectedExecutionHandler用来描述线程数大于或等于线程池最大线�
 - newScheduledThreadPool(int corePoolSize)：周期任务线程池，该线程池的线程可以按照delay依次执行线程，也可以周期执行。
 - newSingleThreadExecutor()：单例线程池，任意时间内池中只有一个线程。
 
-#### 线程池监控
+### 3.3 线程池监控
 
 ThreadPoolExecutor里提供了一些空方法，我们可以通过继承ThreadPoolExecutor，复写这些方法来实现对线程池的监控。
 
@@ -508,7 +746,9 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 - getPoolSize：线程池的线程数量。如果线程池不销毁的话，线程池里的线程不会自动销毁，所以这个大小只增不减。 
 - getActiveCount：获取活动的线程数。 
 
-### 2.2 AsyncTask
+## 四 线程池应用
+
+### 4.1 AsyncTask
 
 >AsyncTask基于ThreadPoolExecutor实现，内部封装了Thread+Handler，多用来执行耗时较短的任务。
 

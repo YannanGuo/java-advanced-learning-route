@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.guoxiaoxing.java.demo.R;
 
+import java.util.Vector;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -38,6 +39,7 @@ public class ThreadActivity extends AppCompatActivity implements View.OnClickLis
         findViewById(R.id.btn_thread_volatile).setOnClickListener(this);
         findViewById(R.id.btn_thread_wait_and_notify).setOnClickListener(this);
         findViewById(R.id.btn_thread_join).setOnClickListener(this);
+        findViewById(R.id.btn_thread_vector_thread_safe).setOnClickListener(this);
         findViewById(R.id.btn_thread_current_thread).setOnClickListener(this);
     }
 
@@ -67,6 +69,9 @@ public class ThreadActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.btn_thread_thread_pool:
                 threadPool();
+                break;
+            case R.id.btn_thread_vector_thread_safe:
+                vectorThreadSafe();
                 break;
             case R.id.btn_thread_current_thread:
                 currentThread();
@@ -179,10 +184,8 @@ public class ThreadActivity extends AppCompatActivity implements View.OnClickLis
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                synchronized (this) {
-                    for (int i = 0; i < 10; i++) {
-                        start++;
-                    }
+                for (int i = 0; i < 10; i++) {
+                    start++;
                 }
             }
         };
@@ -191,17 +194,7 @@ public class ThreadActivity extends AppCompatActivity implements View.OnClickLis
             Thread thread = new Thread(runnable);
             thread.start();
         }
-
         Log.d(TAG, "start = " + start);
-
-        try {
-            Log.d(TAG, "try");
-            return;
-        } catch (Exception e) {
-            Log.d(TAG, "catch");
-        } finally {
-            Log.d(TAG, "finally");
-        }
     }
 
     private void waitAndNotigy() {
@@ -288,6 +281,45 @@ public class ThreadActivity extends AppCompatActivity implements View.OnClickLis
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void vectorThreadSafe() {
+        final Vector<String> vector = new Vector<>();
+
+        while (true) {
+            for (int i = 0; i < 10; i++) {
+                vector.add("项：" + i);
+            }
+
+            Thread removeThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    synchronized (vector) {
+                        for (int i = 0; i < vector.size(); i++) {
+                            vector.remove(i);
+                        }
+                    }
+                }
+            });
+
+            Thread printThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    synchronized (vector) {
+                        for (int i = 0; i < vector.size(); i++) {
+                            Log.d(TAG, vector.get(i));
+                        }
+                    }
+                }
+            });
+
+            removeThread.start();
+            printThread.start();
+
+            if (Thread.activeCount() >= 20) {
+                return;
+            }
         }
     }
 
