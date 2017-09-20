@@ -32,6 +32,8 @@
 
 Java线程始终还是要映射到系统的线程中来，如下图所示：
 
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/java_thread_impl.png"/>
+
 这里面牵扯三个概念：
 
 >内核线程：Kernel Level Thread，它是直接由系统内核支持的线程，该线程有系统内核完成切换，通过调度器把每个线程映射到每个处理器上。
@@ -217,6 +219,8 @@ volatile有两条关键的语义：
 - 禁止进行指令重排序
 
 要理解volatile关键字，我们得先从Java的线程模型开始说起。如图所示：
+
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/java_memory_model.png"/>
 
 Java内存模型规定了所有字段（这些字段包括实例字段、静态字段等，不包括局部变量、方法参数等，因为这些是线程私有的，并不存在竞争）都存在主内存中，每个线程会
 有自己的工作内存，工作内存里保存了线程所使用到的变量在主内存里的副本拷贝，线程对变量的操作只能在工作内存里进行，而不能直接读写主内存，当然不同内存之间也
