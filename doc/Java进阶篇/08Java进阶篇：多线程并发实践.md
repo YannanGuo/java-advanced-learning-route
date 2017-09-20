@@ -32,7 +32,7 @@
 
 Java线程始终还是要映射到系统的线程中来，如下图所示：
 
-<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/java_thread_impl.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/java_thread_impl.png"/>
 
 这里面牵扯三个概念：
 
@@ -80,7 +80,7 @@ Java线程始终还是要映射到系统的线程中来，如下图所示：
 
 线程状态图
 
-<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/java_thread_state.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/java_thread_state.png"/>
 
 - NEW：创建状态，线程创建之后，但是还未启动。
 - RUNNABLE：运行状态，处于运行状态的线程，但有可能处于等待状态，例如等待CPU、IO等。
@@ -166,7 +166,7 @@ Vector，那它就不再是线程安全的了。
 
 但是程序却crash了
 
-<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/vector_thread_safe.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/vector_thread_safe.png"/>
 
 正确的做法应该是vector对象加上同步锁，如下：
 
@@ -220,7 +220,7 @@ volatile有两条关键的语义：
 
 要理解volatile关键字，我们得先从Java的线程模型开始说起。如图所示：
 
-<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/java_memory_model.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/java_memory_model.png"/>
 
 Java内存模型规定了所有字段（这些字段包括实例字段、静态字段等，不包括局部变量、方法参数等，因为这些是线程私有的，并不存在竞争）都存在主内存中，每个线程会
 有自己的工作内存，工作内存里保存了线程所使用到的变量在主内存里的副本拷贝，线程对变量的操作只能在工作内存里进行，而不能直接读写主内存，当然不同内存之间也
@@ -266,7 +266,7 @@ Java内存模型规定了所有字段（这些字段包括实例字段、静态�
 
 ```
 
-<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/volatile_thread_safe.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/volatile_thread_safe.png"/>
 
 这段代码启动了10个线程，每次10次自增，按道理最终结果应该是100，但是结果并非如此。
 
@@ -341,7 +341,7 @@ public class Singleton {
 
 它的字节码如下：
 
-<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/synchronized_bytecode.png.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/synchronized_bytecode.png.png"/>
 
 ### 2.3 ReentrantLock
 
@@ -358,7 +358,7 @@ ReentrantLock也是互斥同步的一种实现。
 
 线程池状态图
 
-<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/ThreadPoolExecutor_state.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ThreadPoolExecutor_state.png"/>
 
 - RUNNING：可以接受新任务，也可以处理等待队列里的任务。
 - SHUTDOWN：不接受新任务，但可以处理等待队列里的任务。
@@ -401,7 +401,7 @@ private static int ctlOf(int rs, int wc) { return rs | wc; }
 
 ThreadPoolExecutor调度流程图
 
-<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/ThreadPoolExecutor_flow.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ThreadPoolExecutor_flow.png"/>
 
 **execute(Runnable command)**
 
@@ -825,7 +825,7 @@ AsyncTask的使用非常的简单，接下来我们去分析AsyncTask的源码�
 
 AsyncTask流程图
 
-<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/AsyncTask_flow.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/AsyncTask_flow.png"/>
 
 AsyncTask源码的一开始就是个创建线程池的流程。
 
