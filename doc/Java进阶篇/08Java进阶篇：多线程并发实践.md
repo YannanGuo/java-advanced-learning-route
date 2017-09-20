@@ -11,9 +11,11 @@
     - 1.2 线程状态
 - 二 线程同步
 - 三 线程池
+    -3.1 线程池调度
+    -3.2 线程池配置
+    -3.1 线程池监控
 - 四 线程池应用
-    - 2.1 ThreadPoolExecutor
-    - 2.2 AsyncTask
+    - 4.1 AsyncTask
     
 本篇文章用来分析Java中多线程并发原理与实践。
 
@@ -37,6 +39,7 @@ Java线程始终还是要映射到系统的线程中来，如下图所示：
 这里面牵扯三个概念：
 
 >内核线程：Kernel Level Thread，它是直接由系统内核支持的线程，该线程有系统内核完成切换，通过调度器把每个线程映射到每个处理器上。
+
 >轻量级进程：Light Weight Process，它不是进程，不要被它的名字迷惑了。它是供应用程序使用的一种高级接口，它在底层由内核线程支持，一一对应。它的各种线程操作也都
 基于内核线程实现。
 
@@ -294,7 +297,7 @@ Java内存模型规定了所有字段（这些字段包括实例字段、静态�
 
 指令重排序绘制被volatile修饰的变量的赋值操作前，添加一个内存屏障，指令重排序时不能把后面的指令重排序的内存屏障之前的位置。
 
-关于指令重排序不是本篇文章重点讨论的内容，更多细节可以参考[指令重排序不](https://tech.meituan.com/java-memory-reordering.html)。
+关于指令重排序不是本篇文章重点讨论的内容，更多细节可以参考[指令重排序](https://tech.meituan.com/java-memory-reordering.html)。
 
 ### 2.2 synchronized
 
@@ -341,7 +344,7 @@ public class Singleton {
 
 它的字节码如下：
 
-<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/synchronized_bytecode.png.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/synchronized_bytecode.png" height="300"/>
 
 ### 2.3 ReentrantLock
 
