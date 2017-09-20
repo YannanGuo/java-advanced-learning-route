@@ -344,7 +344,7 @@ public class Singleton {
 
 它的字节码如下：
 
-<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/synchronized_bytecode.png" height="300"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/synchronized_bytecode.png"/>
 
 ### 2.3 ReentrantLock
 
@@ -361,7 +361,7 @@ ReentrantLock也是互斥同步的一种实现。
 
 线程池状态图
 
-<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ThreadPoolExecutor_state.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ThreadPoolExecutor_state.png"  height="400"/>
 
 - RUNNING：可以接受新任务，也可以处理等待队列里的任务。
 - SHUTDOWN：不接受新任务，但可以处理等待队列里的任务。
