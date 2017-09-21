@@ -7,15 +7,19 @@
 **文章目录**
 
 - 一 线程原理
-    - 1.1 线程优先级
-    - 1.2 线程状态
+    - 1.1 线程实现
+    - 1.2 线程调度
 - 二 线程同步
+    - 2.1 volatile
+    - 2.2 synchronized
 - 三 线程池
     - 3.1 线程池调度
     - 3.2 线程池配置
     - 3.1 线程池监控
 - 四 线程池应用
     - 4.1 AsyncTask
+    - 4.2 Okhttp
+    - 4.3 RxJava
     
 本篇文章主要用来讨论Java中多线程并发原理与实践经验，并不是一篇使用例子教程，这方面内容可以参考网上其他文章。
 
@@ -79,9 +83,9 @@ Java线程始终还是要映射到系统的线程中来，如下图所示：
 - 线程优先级具有继承性，例如线程A启动线程B，则B与A有相同的优先级。
 - 优先级高的线程会被优先执行，因此，当两个线程优先级差别很大时，谁先执行完和代码的调用顺序无关，当然线程时间片的获取具有随机性，优先级高的线程未必就先执行完。
 
-### 1.2 线程状态
+### 1.2 线程调度
 
-线程状态图
+线程状态流程图图
 
 <img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/java_thread_state.png"/>
 
@@ -635,6 +639,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
            }
 }
 ```
+>所以你可以理解了，runWorker()方法是在新创建线程的run()方法里的，而runWorker()又不断的调用getTask()方法去获取阻塞队列里的任务，这样就实现了线程的复用。
 
 ### 3.2 线程池配置
 
@@ -706,15 +711,16 @@ private static final int maximumPoolSize = NUMBER_OF_CPU * 2 + 1;
 
 它的实现类有：
 
-- ArrayBlockingQueue ：一个由数组结构组成的有界阻塞队列。
-- LinkedBlockingQueue ：一个由链表结构组成的有界阻塞队列。
-- PriorityBlockingQueue ：一个支持优先级排序的无界阻塞队列。
-- DelayQueue：一个使用优先级队列实现的无界阻塞队列。
-- SynchronousQueue：一个不存储元素的阻塞队列。
-- LinkedTransferQueue：一个由链表结构组成的无界阻塞队列。
-- LinkedBlockingDeque：一个由链表结构组成的双向阻塞队列。
+- ArrayBlockingQueue ：一个数组实现的有界阻塞队列，此队列按照FIFO的原则对元素进行排序，支持公平访问队列（可重入锁实现ReenttrantLock）。
+- LinkedBlockingQueue ：一个由链表结构组成的有界阻塞队列，此队列默认和最大长度为Integer.MAX_VALUE，按照FIFO的原则对元素进行排序。
+- PriorityBlockingQueue ：一个支持优先级排序的无界阻塞队列，默认情况下采用自然顺序排列，也可以指定Comparator。
+- DelayQueue：一个支持延时获取元素的无界阻塞队列，创建元素时可以指定多久以后才能从队列中获取当前元素，常用于缓存系统设计与定时任务调度等。
+- SynchronousQueue：一个不存储元素的阻塞队列。存入操作必须等待获取操作，反之亦然，它相当于一个传球手，非常适合传递性场景。
+- LinkedTransferQueue：一个由链表结构组成的无界阻塞队列，与LinkedBlockingQueue相比多了transfer和tryTranfer方法，该方法在有消费者等待接收元素时会立即将元素传递给消费者。
+- LinkedBlockingDeque：一个由链表结构组成的双端阻塞队列，可以从队列的两端插入和删除元素。因为出入口都有两个，可以减少一半的竞争。适用于工作窃取的场景。
 
->一般说来，有界队列的可控性会好一些，有利于增加系统的稳定性。如果我们处理的任务有优先级，则可以使用PriorityBlockingQueue队列。
+>工作窃取：例如有两个队列A、B，各自干自己的活，但是A效率比较高，很快把自己的活干完了，于是勤快的A就会去窃取B的任务来干，这是A、B会访问同一个队列，为了减少A、B的竞争，规定窃取者A
+只从双端队列的尾部拿任务，被窃取者B只从双端队列的头部拿任务。
 
 我们最后来看看RejectedExecutionHandler参数的配置。
 
@@ -1035,3 +1041,132 @@ public abstract class AsyncTask<Params, Progress, Result> {
 }
 ```
 所以我们没调用一次AsyncTask.execute()方法就将FutureTask对象添加到队列尾部，然后会从队列头部取出任务放入线程池中执行，所以你可以看着这是一个串行执行器。
+
+### 4.2 Okhttp
+
+在Okhttp的任务调度器Dispatcher里有关于线程池的配置
+
+```java
+public final class Dispatcher {
+    
+      public synchronized ExecutorService executorService() {
+        if (executorService == null) {
+          executorService = new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60, TimeUnit.SECONDS,
+              new SynchronousQueue<Runnable>(), Util.threadFactory("OkHttp Dispatcher", false));
+        }
+        return executorService;
+      }
+}
+```
+
+你可以看到它的配置：
+
+- 核心线程数为0，最大线程数为Integer.MAX_VALUE，不对核心线程数进行限制，随时创建新的线程，空闲存活时间为60s，用完即走。这也比较符合网络请求的特性。
+- 阻塞队列为SynchronousQueue，该队列不存储任务，只传递任务，所以把任务添加进去就会执行。
+
+这其实是Excutors.newCachedThreadPool()缓存池的实现。总结来说就是新任务过来进入SynchronousQueue，它是一个单工模式的队列，只传递任务，不存储任务，然后就创建
+新线程执行任务，线程不活动的存活时间为60s。
+
+
+在发起网络请求时，每个请求执行完成后都会调用client.dispatcher().finished(this)。
+
+```java
+final class RealCall implements Call {
+    
+  final class AsyncCall extends NamedRunnable {
+    private final Callback responseCallback;
+
+    AsyncCall(Callback responseCallback) {
+      super("OkHttp %s", redactedUrl());
+      this.responseCallback = responseCallback;
+    }
+
+    String host() {
+      return originalRequest.url().host();
+    }
+
+    Request request() {
+      return originalRequest;
+    }
+
+    RealCall get() {
+      return RealCall.this;
+    }
+
+    @Override protected void execute() {
+      boolean signalledCallback = false;
+      try {
+        Response response = getResponseWithInterceptorChain();
+        if (retryAndFollowUpInterceptor.isCanceled()) {
+          signalledCallback = true;
+          responseCallback.onFailure(RealCall.this, new IOException("Canceled"));
+        } else {
+          signalledCallback = true;
+          responseCallback.onResponse(RealCall.this, response);
+        }
+      } catch (IOException e) {
+        if (signalledCallback) {
+          // Do not signal the callback twice!
+          Platform.get().log(INFO, "Callback failure for " + toLoggableString(), e);
+        } else {
+          responseCallback.onFailure(RealCall.this, e);
+        }
+      } finally {
+        //异步请求
+        client.dispatcher().finished(this);
+      }
+    }
+  }
+}
+```
+
+我们来看看client.dispatcher().finished(this)这个方法。
+
+```java
+public final class Dispatcher {
+    
+  private <T> void finished(Deque<T> calls, T call, boolean promoteCalls) {
+    int runningCallsCount;
+    Runnable idleCallback;
+    synchronized (this) {
+      //将已经结束的请求call移除正在运行的队列calls
+      if (!calls.remove(call)) throw new AssertionError("Call wasn't in-flight!");
+      //异步请求promoteCalls为true
+      if (promoteCalls) promoteCalls();
+      runningCallsCount = runningCallsCount();
+      idleCallback = this.idleCallback;
+    }
+
+    if (runningCallsCount == 0 && idleCallback != null) {
+      idleCallback.run();
+    }
+  }
+
+    private void promoteCalls() {
+      //当前异步请求数大于最大请求数，不继续执行
+      if (runningAsyncCalls.size() >= maxRequests) return; // Already running max capacity.
+      //异步等待队列为空，不继续执行
+      if (readyAsyncCalls.isEmpty()) return; // No ready calls to promote.
+  
+      //遍历异步等待队列
+      for (Iterator<AsyncCall> i = readyAsyncCalls.iterator(); i.hasNext(); ) {
+        AsyncCall call = i.next();
+  
+        //如果没有超过相同host的最大请求数，则复用当前请求的线程
+        if (runningCallsForHost(call) < maxRequestsPerHost) {
+          i.remove();
+          runningAsyncCalls.add(call);
+          executorService().execute(call);
+        }
+  
+        //运行队列达到上限，也不再执行
+        if (runningAsyncCalls.size() >= maxRequests) return; // Reached max capacity.
+      }
+    }
+}
+```
+
+所以你可以看到Okhttp不是用线程池来控制线程个数，线程池里的线程执行的都是正在运行请请求，控制线程的是Dispatcher，Dispatcher.promoteCalls()方法通过
+最大请求数maxRequests和相同host最大请求数maxRequestsPerHost来控制异步请求不超过两个最大值，在值范围内不断的将等待队列readyAsyncCalls中的请求添加
+到运行队列runningAsyncCalls中去。
+
