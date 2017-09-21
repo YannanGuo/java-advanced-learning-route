@@ -348,8 +348,9 @@ public class Singleton {
 - synchronized代码块 ：同步代码块，作用范围是整个代码块，作用对象是调用这个代码块的对象。
 - synchronized方法 ：同步方法，作用范围是整个方法，作用对象是调用这个方法的对象。
 - synchronized静态方法 ：同步静态方法，作用范围是整个静态方法，作用对象是调用这个类的所有对象。
-- synchronized(ClassName.class) ：全局锁，作用对象是这个类的所有对象。
 - synchronized(this)：作用范围是该对象中所有被synchronized标记的变量、方法或代码块，作用对象是对象本身。
+- synchronized(ClassName.class) ：与synchronized(this)类似，用于静态方法中。
+
 
 关不同步锁还有ReentrantLock，eentrantLockR相对于synchronized具有等待可中断、公平锁等更多功能，这里限于篇幅，不再展开。
 
