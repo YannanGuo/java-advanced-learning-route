@@ -1172,3 +1172,38 @@ public final class Dispatcher {
 所以你可以看到Okhttp不是用线程池来控制线程个数，线程池里的线程执行的都是正在运行请请求，控制线程的是Dispatcher，Dispatcher.promoteCalls()方法通过
 最大请求数maxRequests和相同host最大请求数maxRequestsPerHost来控制异步请求不超过两个最大值，在值范围内不断的将等待队列readyAsyncCalls中的请求添加
 到运行队列runningAsyncCalls中去。
+
+## 附录
+
+以下为本次技术分享的PPT
+
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片01.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片02.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片03.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片04.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片05.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片06.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片07.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片08.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片09.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片10.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片11.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片12.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片13.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片14.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片15.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片16.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片17.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片18.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片19.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片20.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片21.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片22.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片23.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片24.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片25.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片26.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片27.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片28.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片29.png"/>
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/ppt/幻灯片30.png"/>
