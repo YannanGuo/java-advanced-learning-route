@@ -1170,3 +1170,4 @@ public final class Dispatcher {
 最大请求数maxRequests和相同host最大请求数maxRequestsPerHost来控制异步请求不超过两个最大值，在值范围内不断的将等待队列readyAsyncCalls中的请求添加
 到运行队列runningAsyncCalls中去。
 
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/okhttp_flow.png"/>
