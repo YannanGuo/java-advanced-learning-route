@@ -19,7 +19,6 @@
 - 四 线程池应用
     - 4.1 AsyncTask
     - 4.2 Okhttp
-    - 4.3 RxJava
     
 本篇文章主要用来讨论Java中多线程并发原理与实践经验，并不是一篇使用例子教程，这方面内容可以参考网上其他文章。
 
@@ -1067,6 +1066,9 @@ public final class Dispatcher {
 这其实是Excutors.newCachedThreadPool()缓存池的实现。总结来说就是新任务过来进入SynchronousQueue，它是一个单工模式的队列，只传递任务，不存储任务，然后就创建
 新线程执行任务，线程不活动的存活时间为60s。
 
+Okhttp请求流程图
+
+<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/okhttp_flow.png"/>
 
 在发起网络请求时，每个请求执行完成后都会调用client.dispatcher().finished(this)。
 
@@ -1169,5 +1171,3 @@ public final class Dispatcher {
 所以你可以看到Okhttp不是用线程池来控制线程个数，线程池里的线程执行的都是正在运行请请求，控制线程的是Dispatcher，Dispatcher.promoteCalls()方法通过
 最大请求数maxRequests和相同host最大请求数maxRequestsPerHost来控制异步请求不超过两个最大值，在值范围内不断的将等待队列readyAsyncCalls中的请求添加
 到运行队列runningAsyncCalls中去。
-
-<img src="https://github.com/guoxiaoxing/java/raw/master/art/program/thread/okhttp_flow.png"/>
